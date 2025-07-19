@@ -31,6 +31,8 @@ $_title_backuplist = '履歴一覧';
 $_msg_unfreeze       = '凍結解除';
 $_msg_preview        = '以下のプレビューを確認して、よければページ下部のボタンで更新してください。';
 $_msg_preview_delete = '（ページの内容は空です。更新するとこのページは削除されます。）';
+$_msg_draft_saved   = '下書きを保存しました。';
+$_msg_draft_loaded  = '保存された下書きを読み込みました。';
 $_msg_collided       = 'あなたがこのページを編集している間に、他の人が同じページを更新してしまったようです。<br />
 今回追加した行は +で始まっています。<br />
 !で始まる行が変更された可能性があります。<br />
@@ -74,6 +76,7 @@ $_symbol_noexists = '';
 $_btn_preview   = 'プレビュー';
 $_btn_repreview = '再度プレビュー';
 $_btn_update    = 'ページの更新';
+$_btn_draft    = '下書き保存';
 $_btn_cancel    = 'キャンセル';
 $_btn_notchangetimestamp = 'タイムスタンプを変更しない';
 $_btn_addtop    = 'ページの上に追加';

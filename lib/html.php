@@ -387,7 +387,13 @@ EOD;
 	$s_postdata  = htmlsc($refer . $postdata);
 	$s_original  = isset($vars['original']) ? htmlsc($vars['original']) : $s_postdata;
 	$b_preview   = isset($vars['preview']); // TRUE when preview
-	$btn_preview = $b_preview ? $_btn_repreview : $_btn_preview;
+        $btn_preview = $b_preview ? $_btn_repreview : $_btn_preview;
+
+        $draft_button = '';
+        if (PKWK_USE_DRAFT && isset($_SESSION['authenticated_user']) && $_SESSION['authenticated_user'] !== '') {
+                global $_btn_draft;
+                $draft_button = '<input type="submit" name="draft" value="' . $_btn_draft . '" accesskey="d" />';
+        }
 
 	// Checkbox 'do not change timestamp'
 	$add_notimestamp = '';
@@ -425,7 +431,7 @@ $template
   <br />
   <div style="float:left;">
    <input type="submit" name="preview" value="$btn_preview" accesskey="p" />
-   <input type="submit" name="write"   value="$_btn_update" accesskey="s" />
+   <input type="submit" name="write"   value="$_btn_update" accesskey="s" /> $draft_button
    $add_top
    $add_notimestamp
   </div>

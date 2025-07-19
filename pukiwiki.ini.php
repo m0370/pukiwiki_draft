@@ -34,7 +34,11 @@ if (! defined('PKWK_SAFE_MODE'))
 //   (in short, 'Web bug') or external malicious CGI (looks like an image's URL)
 //   attack to Wiki readers, but easy way to show images.
 if (! defined('PKWK_DISABLE_INLINE_IMAGE_FROM_URI'))
-	define('PKWK_DISABLE_INLINE_IMAGE_FROM_URI', 0);
+        define('PKWK_DISABLE_INLINE_IMAGE_FROM_URI', 0);
+
+// Draft feature (0:disable, 1:enable)
+if (! defined('PKWK_USE_DRAFT'))
+        define('PKWK_USE_DRAFT', 0);
 
 // PKWK_QUERY_STRING_MAX
 //   Max length of GET method, prohibits some worm attack ASAP
@@ -74,6 +78,7 @@ define('DATA_DIR',      DATA_HOME . 'wiki/'     ); // Latest wiki texts
 define('DIFF_DIR',      DATA_HOME . 'diff/'     ); // Latest diffs
 define('BACKUP_DIR',    DATA_HOME . 'backup/'   ); // Backups
 define('CACHE_DIR',     DATA_HOME . 'cache/'    ); // Some sort of caches
+define('DRAFT_DIR',     DATA_HOME . 'draft/'    ); // Draft data
 define('UPLOAD_DIR',    DATA_HOME . 'attach/'   ); // Attached files and logs
 define('COUNTER_DIR',   DATA_HOME . 'counter/'  ); // Counter plugin's counts
 define('PLUGIN_DIR',    DATA_HOME . 'plugin/'   ); // Plugin directory

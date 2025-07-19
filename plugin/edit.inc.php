@@ -9,6 +9,47 @@
 // Remove #freeze written by hand
 define('PLUGIN_EDIT_FREEZE_REGEX', '/^(?:#freeze(?!\w)\s*)+/im');
 
+function pkwk_get_user_name_for_draft()
+{
+    if (isset($_SESSION['authenticated_user']) && $_SESSION['authenticated_user'] !== '') {
+        return $_SESSION['authenticated_user'];
+    }
+    return FALSE;
+}
+
+function plugin_edit_get_draft_filename($page, $user)
+{
+    return DRAFT_DIR . rawurlencode($user) . '/' . rawurlencode($page) . '.txt';
+}
+
+function plugin_edit_draft_save()
+{
+    global $vars, $_msg_draft_saved;
+
+    $page = isset($vars['page']) ? $vars['page'] : '';
+    $user = pkwk_get_user_name_for_draft();
+    if ($user === FALSE) {
+        return array('msg' => 'Error', 'body' => 'Authentication required');
+    }
+
+    $file = plugin_edit_get_draft_filename($page, $user);
+    $dir  = dirname($file);
+    if (! is_dir($dir)) {
+        if (! mkdir($dir, 0777, true)) {
+            return array('msg' => 'Error', 'body' => 'Failed to create draft directory');
+        }
+    }
+    $content = isset($vars['msg']) ? $vars['msg'] : '';
+    if (file_put_contents($file, $content) === FALSE) {
+        return array('msg' => 'Error', 'body' => 'Failed to save draft');
+    }
+
+    $_SESSION['pkwk_draft_message'] = $_msg_draft_saved;
+    pkwk_headers_sent();
+    header('Location: ' . get_page_uri($page, 'edit'));
+    exit;
+}
+
 function plugin_edit_action()
 {
 	global $vars, $_title_edit;
@@ -22,8 +63,10 @@ function plugin_edit_action()
 	check_editable($page, true, true);
 	check_readable($page, true, true);
 
-	if (isset($vars['preview'])) {
-		return plugin_edit_preview($vars['msg']);
+        if (PKWK_USE_DRAFT && isset($vars['draft']) && pkwk_get_user_name_for_draft() !== FALSE) {
+                return plugin_edit_draft_save();
+        } else if (isset($vars['preview'])) {
+                return plugin_edit_preview($vars['msg']);
 	} else if (isset($vars['template'])) {
 		return plugin_edit_preview_with_template();
 	} else if (isset($vars['write'])) {
@@ -34,8 +77,25 @@ function plugin_edit_action()
 	ensure_valid_page_name_length($page);
 	$postdata = @join('', get_source($page));
 	if ($postdata === '') $postdata = auto_template($page);
-	$postdata = remove_author_info($postdata);
-	return array('msg'=>$_title_edit, 'body'=>edit_form($page, $postdata));
+        $postdata = remove_author_info($postdata);
+
+        $body_msg = '';
+        if (PKWK_USE_DRAFT) {
+                $user = pkwk_get_user_name_for_draft();
+                if ($user !== FALSE && !isset($vars['msg'])) {
+                        $dfile = plugin_edit_get_draft_filename($page, $user);
+                        if (is_file($dfile) && is_readable($dfile)) {
+                                $postdata = file_get_contents($dfile);
+                                $body_msg .= '<p>' . $_msg_draft_loaded . '</p>';
+                        }
+                }
+                if (isset($_SESSION['pkwk_draft_message'])) {
+                        $body_msg .= '<p>' . htmlsc($_SESSION['pkwk_draft_message']) . '</p>';
+                        unset($_SESSION['pkwk_draft_message']);
+                }
+        }
+
+        return array('msg'=>$_title_edit, 'body'=>$body_msg . edit_form($page, $postdata));
 }
 
 function ensure_valid_page_name_length($page)
