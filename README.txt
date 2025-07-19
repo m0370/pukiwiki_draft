@@ -266,3 +266,9 @@ Wikiの様子を見る
     * Tiki                      https://tiki.org/
     * 本家WikiWikiWeb           https://wiki.c2.com/?WikiWikiWeb
     * WikiWikiWebの作者(Cunningham & Cunningham, Inc.) https://c2.com/
+
+下書き機能
+
+    pukiwiki.ini.php で PKWK_USE_DRAFT を 1 に設定し、data/draft/
+    ディレクトリを作成すると、ログインユーザーは編集画面やプレビュー
+    画面で「下書き保存」ボタンが利用できます。

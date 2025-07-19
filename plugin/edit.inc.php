@@ -11,8 +11,12 @@ define('PLUGIN_EDIT_FREEZE_REGEX', '/^(?:#freeze(?!\w)\s*)+/im');
 
 function pkwk_get_user_name_for_draft()
 {
-    if (isset($_SESSION['authenticated_user']) && $_SESSION['authenticated_user'] !== '') {
-        return $_SESSION['authenticated_user'];
+    // Use PukiWiki's auth utility to get current user name
+    if (function_exists('get_auth_user')) {
+        $user = get_auth_user();
+        if ($user !== '') {
+            return $user;
+        }
     }
     return FALSE;
 }

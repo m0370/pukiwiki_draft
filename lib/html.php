@@ -389,11 +389,11 @@ EOD;
 	$b_preview   = isset($vars['preview']); // TRUE when preview
         $btn_preview = $b_preview ? $_btn_repreview : $_btn_preview;
 
-        $draft_button = '';
-        if (PKWK_USE_DRAFT && isset($_SESSION['authenticated_user']) && $_SESSION['authenticated_user'] !== '') {
-                global $_btn_draft;
-                $draft_button = '<input type="submit" name="draft" value="' . $_btn_draft . '" accesskey="d" />';
-        }
+       $draft_button = '';
+       if (PKWK_USE_DRAFT && function_exists('get_auth_user') && get_auth_user() !== '') {
+               global $_btn_draft;
+               $draft_button = '<input type="submit" name="draft" value="' . $_btn_draft . '" accesskey="d" />';
+       }
 
 	// Checkbox 'do not change timestamp'
 	$add_notimestamp = '';

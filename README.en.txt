@@ -154,7 +154,14 @@ ACKNOWLEDGEMENT
     Special thanks to Mr. yu-ji(aka sng) who developed the first PukiWiki.
     And also thanks to Mr. Hiroshi Yuki who was willing to accept our cloning
     YukiWiki and 
-    Cunningham & Cunningham, Inc. who created the original WikiWikiWeb.
+Cunningham & Cunningham, Inc. who created the original WikiWikiWeb.
+
+Draft feature
+
+    Set "PKWK_USE_DRAFT" to 1 in pukiwiki.ini.php and create the
+    "draft" directory under data/ to enable personal draft saving.
+    Logged-in users then see the "Save draft" button on edit and preview
+    pages.
 
 REFERENCE
 
