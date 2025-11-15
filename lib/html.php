@@ -331,7 +331,7 @@ EOS;
 }
 
 // Show 'edit' form
-function edit_form($page, $postdata, $digest = FALSE, $b_template = TRUE)
+function edit_form($page, $postdata, $digest = FALSE, $b_template = TRUE, $hide_draft_notice = FALSE)
 {
 	global $vars, $rows, $cols;
 	global $_btn_preview, $_btn_repreview, $_btn_update, $_btn_cancel, $_msg_help;
@@ -394,7 +394,7 @@ EOD;
 	$has_draft = has_draft($page);
 	$draft_notice = '';
 	$draft_save_onclick = '';
-	if ($has_draft) {
+	if ($has_draft && !$hide_draft_notice) {
 		$draft_time = format_date(get_draft_filetime($page));
 		$draft_notice = <<<EOD
 <div class="alert alert-info" style="margin:10px 0; padding:10px; background-color:#d9edf7; border:1px solid #bce8f1; color:#31708f;">
