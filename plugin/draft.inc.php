@@ -44,7 +44,7 @@ function plugin_draft_list()
 			$time = get_draft_filetime($page);
 			$time_str = format_date($time);
 			$page_link = make_pagelink($page);
-			$edit_link = $script . '?cmd=edit&amp;page=' . rawurlencode($page);
+			$edit_link = $script . '?cmd=edit&amp;page=' . rawurlencode($page) . '&amp;load_draft=true';
 			$delete_link = $script . '?cmd=draft&amp;action=delete&amp;page=' . rawurlencode($page);
 			$publish_link = $script . '?cmd=draft&amp;action=publish&amp;page=' . rawurlencode($page);
 
