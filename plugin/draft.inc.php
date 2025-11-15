@@ -5,6 +5,15 @@
 // License: GPL v2 or (at your option) any later version
 //
 // Draft management plugin (cmd=draft)
+//
+// Version 1.1.0
+//
+// [Changelog]
+// 1.1.0 (2025-11-15): Add access control
+//   - Prohibit access in READONLY mode
+//   - Require authentication when $edit_auth is enabled
+// 1.0.0 (2025-11-15): Initial release
+//   - Draft list, delete, and publish functionality
 
 function plugin_draft_action()
 {
