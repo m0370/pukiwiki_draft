@@ -22,6 +22,9 @@ function plugin_edit_action()
 	check_editable($page, true, true);
 	check_readable($page, true, true);
 
+	// Load draft library
+	require_once(LIB_DIR . 'draft.php');
+
 	if (isset($vars['preview'])) {
 		return plugin_edit_preview($vars['msg']);
 	} else if (isset($vars['template'])) {
@@ -30,6 +33,10 @@ function plugin_edit_action()
 		return plugin_edit_write();
 	} else if (isset($vars['cancel'])) {
 		return plugin_edit_cancel();
+	} else if (isset($vars['draft_save'])) {
+		return plugin_edit_draft_save();
+	} else if (isset($vars['load_draft'])) {
+		return plugin_edit_load_draft();
 	}
 	ensure_valid_page_name_length($page);
 	$postdata = @join('', get_source($page));
@@ -313,4 +320,79 @@ function plugin_edit_setup_initial_pages()
 	if ($autoalias) {
 		init_autoalias_def_page();
 	}
+}
+
+/**
+ * Save as draft
+ */
+function plugin_edit_draft_save()
+{
+	global $vars;
+
+	$page = isset($vars['page']) ? $vars['page'] : '';
+	$msg = isset($vars['msg']) ? $vars['msg'] : '';
+
+	if ($page === '') {
+		return array(
+			'msg' => 'エラー',
+			'body' => '<p>ページが指定されていません。</p>'
+		);
+	}
+
+	// Remove #freeze
+	$msg = preg_replace(PLUGIN_EDIT_FREEZE_REGEX, '', $msg);
+
+	// Save draft
+	if (draft_write($page, $msg)) {
+		$body = '<div class="alert alert-success" style="margin:10px 0; padding:10px; background-color:#dff0d8; border:1px solid #d6e9c6; color:#3c763d;">';
+		$body .= '下書きを保存しました。';
+		$body .= '</div>';
+		$body .= edit_form($page, $msg, md5(join('', get_source($page))), FALSE);
+	} else {
+		$body = '<div class="alert alert-danger" style="margin:10px 0; padding:10px; background-color:#f2dede; border:1px solid #ebccd1; color:#a94442;">';
+		$body .= '下書きの保存に失敗しました。';
+		$body .= '</div>';
+		$body .= edit_form($page, $msg, md5(join('', get_source($page))), FALSE);
+	}
+
+	return array(
+		'msg' => '下書き保存',
+		'body' => $body
+	);
+}
+
+/**
+ * Load from draft
+ */
+function plugin_edit_load_draft()
+{
+	global $vars, $_title_edit;
+
+	$page = isset($vars['page']) ? $vars['page'] : '';
+
+	if ($page === '') {
+		return array(
+			'msg' => 'エラー',
+			'body' => '<p>ページが指定されていません。</p>'
+		);
+	}
+
+	// Get draft content
+	$postdata = get_draft($page, TRUE, TRUE);
+	if ($postdata === FALSE || $postdata === '') {
+		return array(
+			'msg' => 'エラー',
+			'body' => '<p>下書きが見つかりません。</p>'
+		);
+	}
+
+	$body = '<div class="alert alert-info" style="margin:10px 0; padding:10px; background-color:#d9edf7; border:1px solid #bce8f1; color:#31708f;">';
+	$body .= '下書きを読み込みました。';
+	$body .= '</div>';
+	$body .= edit_form($page, $postdata, md5(join('', get_source($page))), FALSE, TRUE);
+
+	return array(
+		'msg' => $_title_edit,
+		'body' => $body
+	);
 }
