@@ -397,17 +397,17 @@ EOD;
 	if ($has_draft) {
 		$draft_time = format_date(get_draft_filetime($page));
 		$draft_notice = <<<EOD
-<div class="alert alert-info" style="margin:10px 0; padding:10px; background-color:#d9edf7; border:1px solid #bce8f1; color:#31708f; overflow:hidden;">
-	<span style="float:left;">下書きが保存されています ($draft_time)</span>
-	<form action="$script" method="post" style="float:right; margin:0;">
+<div class="alert alert-info" style="margin:10px 0; padding:10px; background-color:#d9edf7; border:1px solid #bce8f1; color:#31708f;">
+	<span>下書きが保存されています ($draft_time)</span>
+	<form action="$script" method="post" style="display:inline; margin:0;">
 		<input type="hidden" name="cmd" value="edit" />
 		<input type="hidden" name="page" value="$s_page" />
-		<input type="submit" name="load_draft" value="下書きから復帰" style="padding:2px 10px;" />
+		<input type="submit" name="load_draft" value="下書きから復帰" style="padding:2px 10px; margin-left:10px;" />
 	</form>
 </div>
 EOD;
 		// Add confirmation dialog for draft overwrite
-		$draft_save_onclick = ' onclick="return confirm(\'すでに保存されている下書きがあります。保存されている下書きを上書きしますか？\');"';
+		$draft_save_onclick = ' onclick="return confirm(\'すでに保存されている下書きがあります。下書きを上書き保存しますか？\');"';
 	}
 
 	// Checkbox 'do not change timestamp'
