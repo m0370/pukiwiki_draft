@@ -393,12 +393,13 @@ EOD;
 	require_once(LIB_DIR . 'draft.php');
 	$has_draft = has_draft($page);
 	$draft_notice = '';
+	$load_draft_button = '';
 	if ($has_draft) {
 		$draft_time = format_date(get_draft_filetime($page));
 		$draft_notice = '<div class="alert alert-info" style="margin:10px 0; padding:10px; background-color:#d9edf7; border:1px solid #bce8f1; color:#31708f;">' .
 			'下書きが保存されています (' . $draft_time . ')' .
-			' <button type="submit" name="load_draft" value="true" style="margin-left:10px;">下書きから復帰</button>' .
 			'</div>';
+		$load_draft_button = '<input type="submit" name="load_draft" value="下書きから復帰" style="margin-left:10px;" />';
 	}
 
 	// Checkbox 'do not change timestamp'
@@ -440,6 +441,7 @@ $template
    <input type="submit" name="preview" value="$btn_preview" accesskey="p" />
    <input type="submit" name="write"   value="$_btn_update" accesskey="s" />
    <input type="submit" name="draft_save" value="下書き保存" accesskey="d" style="margin-left:10px;" />
+   $load_draft_button
    $add_top
    $add_notimestamp
   </div>
