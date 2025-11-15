@@ -5,12 +5,33 @@
 // License: GPL v2 or (at your option) any later version
 //
 // Draft management plugin (cmd=draft)
+//
+// Version 1.1.0
+//
+// [Changelog]
+// 1.1.0 (2025-11-15): Add access control
+//   - Prohibit access in READONLY mode
+//   - Require authentication when $edit_auth is enabled
+// 1.0.0 (2025-11-15): Initial release
+//   - Draft list, delete, and publish functionality
 
 function plugin_draft_action()
 {
 	global $vars;
 
-	if (PKWK_READONLY) die_message('PKWK_READONLY prohibits this operation');
+	// 読み取り専用モードではアクセス拒否
+	if (PKWK_READONLY) {
+		die_message('Prohibited by admin (READONLY mode)');
+	}
+
+	// 認証が有効な場合、ログインユーザーのみアクセス可能
+	global $edit_auth;
+	if ($edit_auth) {
+		$auth_user = get_auth_user();
+		if (!$auth_user) {
+			die_message('Authentication required to view draft list');
+		}
+	}
 
 	// Load draft library
 	require_once(LIB_DIR . 'draft.php');
