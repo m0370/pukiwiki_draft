@@ -6,6 +6,14 @@
 // License: GPL v2 or (at your option) any later version
 //
 // Draft related functions
+//
+// Version 1.1.0
+//
+// [Changelog]
+// 1.1.0 (2025-11-15): Add access control support
+//   - Used by draft.inc.php with access restrictions
+// 1.0.0 (2025-11-15): Initial release
+//   - Core draft management functions
 
 /**
  * Check if draft exists for the page
