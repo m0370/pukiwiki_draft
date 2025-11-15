@@ -389,7 +389,7 @@ function plugin_edit_load_draft()
 	$body = '<div class="alert alert-info" style="margin:10px 0; padding:10px; background-color:#d9edf7; border:1px solid #bce8f1; color:#31708f;">';
 	$body .= '下書きを読み込みました。';
 	$body .= '</div>';
-	$body .= edit_form($page, $postdata, md5(join('', get_source($page))), FALSE);
+	$body .= edit_form($page, $postdata, md5(join('', get_source($page))), FALSE, TRUE);
 
 	return array(
 		'msg' => $_title_edit,
