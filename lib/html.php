@@ -389,6 +389,18 @@ EOD;
 	$b_preview   = isset($vars['preview']); // TRUE when preview
 	$btn_preview = $b_preview ? $_btn_repreview : $_btn_preview;
 
+	// Check if draft exists
+	require_once(LIB_DIR . 'draft.php');
+	$has_draft = has_draft($page);
+	$draft_notice = '';
+	if ($has_draft) {
+		$draft_time = format_date(get_draft_filetime($page));
+		$draft_notice = '<div class="alert alert-info" style="margin:10px 0; padding:10px; background-color:#d9edf7; border:1px solid #bce8f1; color:#31708f;">' .
+			'下書きが保存されています (' . $draft_time . ')' .
+			' <button type="submit" name="load_draft" value="true" style="margin-left:10px;">下書きから復帰</button>' .
+			'</div>';
+	}
+
 	// Checkbox 'do not change timestamp'
 	$add_notimestamp = '';
 	if ($notimeupdate != 0) {
@@ -413,6 +425,7 @@ EOD;
 	$h_msg_edit_unloadbefore_message = htmlsc($_msg_edit_unloadbefore_message);
 	$body = <<<EOD
 <div class="edit_form">
+$draft_notice
  <form action="$script" method="post" class="_plugin_edit_edit_form" style="margin-bottom:0;">
 $template
   $addtag
@@ -426,6 +439,7 @@ $template
   <div style="float:left;">
    <input type="submit" name="preview" value="$btn_preview" accesskey="p" />
    <input type="submit" name="write"   value="$_btn_update" accesskey="s" />
+   <input type="submit" name="draft_save" value="下書き保存" accesskey="d" style="margin-left:10px;" />
    $add_top
    $add_notimestamp
   </div>
