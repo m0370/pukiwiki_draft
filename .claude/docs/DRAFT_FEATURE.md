@@ -46,6 +46,11 @@ PukiWikiに下書き機能を追加しました。ページ編集中の内容を
 - `plugin/edit.inc.php` - 下書き保存・読み込み処理追加
   - `plugin_edit_draft_save()` - 下書き保存処理
   - `plugin_edit_load_draft()` - 下書き読み込み処理
+  - `plugin_edit_discard_draft()` - 保存確定後の下書き破棄処理
+    （`page_write()` 成功直後にのみ呼ぶ。衝突検出・パスワードエラーで
+    編集フォームに戻る経路は `page_write()` より手前で return するため
+    構造上呼ばれない。追記（`$add`）は同じ `page_write()` に到達するので
+    呼び出し側で明示的に弾いている。いずれも書きかけを保護するため）
 
 ## 使用方法
 
